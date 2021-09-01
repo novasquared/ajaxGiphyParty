@@ -11,18 +11,37 @@ function getSearchTerm() {
 
 async function getGiphyData(evt) {
     evt.preventDefault();
-    let firstParam = getSearchTerm();
+    let firstParam = getSearchTerm(); // recommend separating
     let response = await axios.get(
-        GIPHY_BASE_URL, {params: {q : firstParam, api_key : API_KEY}}
-        );
+        GIPHY_BASE_URL, { params: { q: firstParam, api_key: API_KEY } }
+    );
     console.log("data", response);
-    addImage();
-    return response.data
+    let dataLength = response.data.data.length;
+
+
+    let randomNumber = getRandomNum(dataLength);
+    let randomURL = response.data.data[randomNumber].images.original.url;
+    addImage(randomURL);
+
+    // let url = response.data.data[0].url
+    // console.log(dataLength)
+    // console.log("url", url);
+    // addImage(url);
+    // addImage("https://giphy.com/embed/ylyUQlf4VUVF9odXKU");
+
+    return response.data; // may not need; not using anywhere else
 }
 
-// function getRandomNum(length) {
+function getRandomNum(length) {
+    // take in the Axios reponse object and pull the array from it
+    // generate a random URL and return that URL
+    // pass in the returned URL to a saved variable to addImage
 
-// }
+    // take in array length
+    // generate a random number in that range
+
+    return Math.floor((Math.random() * length) + 1);
+}
 
 function addImage(picURL) {
     // $("#pictures").html(res.data.???)
@@ -36,4 +55,12 @@ function removeImages() {
 }
 
 $("#party").on("submit", getGiphyData);
+$('#removeImages').on("click", removeImages);
 
+// break getGiphyData
+// function handleSubmit(evt) 
+    // call getFormData
+    // call getImageFromGiphy
+    // call addImage
+
+// docstrings needed
